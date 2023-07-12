@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <script src="https://cdn.tailwindcss.com"></script>
+      <style>
+         @import url("https://fonts.googleapis.com/css2?family=Oswald&display=swap");
+         * {
+         font-family: "Oswald", sans-serif;
+         }
+         @media only screen and (max-width: 650px) {
+             p {
+                 padding-left: 20px;
+                 padding-right: 20px;
+             }
+         }
+         
+      </style>
+      <title>{{ cv.name_surname }} | CV</title>
+   </head>
+   <body>
+      {% load level_stars %}
+      <div class="container mx-auto mt-10">
+         <img
+            class="w-24 mx-auto py-10"
+            src="{{ cv.logo.url }}"
+            alt="cagatayuresin-logo" />
+         <p class="text-center text-3xl font-bold">{{ cv.name_surname }}</p>
+         <p class="text-center uppercase font-light text-xl tracking-wider">
+            {{ cv.occupation }}
+         </p>
+         <p class="text-center">{{ cv.email }}</p>
+      </div>
+      <div class="container mx-auto space-y-3 text-justify mt-10">
+         <p class="text-center">CV</p>
+         <hr>
+         <p>{{ cv.cv }}</p>
+      </div>
+      <div class="container mx-auto">
+         <p class="text-center mt-10">SKILLS</p>
+         <hr>
+      </div>
+      <div class="container mx-auto flex flex-wrap justify-center p-5">
+         {% for skill in cv.skills.all %}
+         <div>
+            <div class="flex items-center p-3">
+               <div class="w-12 h-12 my-1">
+                  <img src="{{ skill.icon.url }}" alt="{{ skill.skill_name }}" />
+               </div>
+               <div class="ml-2">
+                  <h3 class="text-lg font-medium">{{ skill.skill_name }}</h3>
+                  <div class="flex items-center text-lg">
+                     {% for star in skill.level|stars %}
+                     {{ star }}
+                     {% endfor %}
+                  </div>
+               </div>
+            </div>
+         </div>
+         {% endfor %}
+      </div>
+      <div class="container mx-auto mb-10 mt-10">
+         <p class="text-center mt-10">EXPERIENCE</p>
+         <hr>
+         {% for experience in cv.experiences.all %}
+         <div class="pt-5">
+            <p class="font-bold text-xl">
+               {{ experience.employer }}<span class="pl-3 font-light">{{ experience.occupation}}</span>
+            </p>
+            <p class="italic">{{ experience.years}}</p>
+            <p class="mb-3">
+               {{ experience.description}}
+            </p>
+            <ul class="list-disc text-sm pl-10 text-justify">
+               {% for project in experience.projects.all %}
+               <li class="font-bold">
+                  <span class="font-light italic mr-2">{{ project.years }}</span>{{ project.project_name }}
+               </li>
+               <p class="pl-5">
+                  {{ project.description }}
+               </p>
+               {% endfor %}
+            </ul>
+         </div>
+         {% endfor %}
+      </div>
+      <div class="container mx-auto mb-10 mt-10">
+         <p class="text-center mt-10">EDUCATION</p>
+         <hr>
+         {% for education in cv.educations.all %}
+         <div class="pt-5">
+            <p class="font-bold text-xl">
+               {{ education.school }}<span class="pl-3 font-light">{{ education.department}}</span>
+            </p>
+            <p class="italic">{{ education.years}}</p>
+            <ul class="list-disc text-sm pl-10 text-justify">
+               {% for project in education.projects.all %}
+               <li class="font-bold">
+                  <span class="font-light italic mr-2">{{ project.years }}</span>{{ project.project_name }}
+               </li>
+               <p class="pl-5">
+                  {{ project.description }}
+               </p>
+               {% endfor %}
+            </ul>
+         </div>
+         {% endfor %}
+      </div>
+      <div class="container mx-auto">
+         <p class="text-center mt-10">LANGUAGES</p>
+         <hr>
+      </div>
+      <div class="container mx-auto flex flex-wrap justify-center pt-10 pb-10">
+         {% for language in cv.languages.all %}
+         <div>
+            <div class="flex items-center">
+               <div class="ml-2">
+                  <h3 class="text-lg font-medium text-center">{{ language.skill_name }}</h3>
+                  <div class="flex items-center text-lg">
+                     {% for star in language.level|stars %}
+                     {{ star }}
+                     {% endfor %}
+                  </div>
+               </div>
+            </div>
+         </div>
+         {% endfor %}
+      </div>
+   </body>
+</html>
